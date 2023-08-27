@@ -13,6 +13,14 @@
   row-gap: 10px;
 }
 
+form>input{
+  width: 100%;
+}
+
+input{
+  margin-top: 10px;
+}
+
 table{
   table-layout: fixed;
   border-collapse: collapse;

@@ -12,11 +12,13 @@ function FilterableProductTable(){
 
 function SearchBar(){
   return (
-    <>
-      <label htmlFor="search">Search item</label>
-      <input type="search" id="search" name="search" placeholder="search"></input>
-    </>
-    
+    <form>
+      <input type="text" id="search" name="search" placeholder="Search" /><br/>
+      <label>
+        <input type="checkbox" />
+        Only show products in stock
+      </label>
+    </form>
   )
 }
 
