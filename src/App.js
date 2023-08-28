@@ -1,11 +1,15 @@
 
 import './App.css';
 
-function FilterableProductTable(){
+function App(){
+  return <FilterableProductTable products = {PRODUCTS}/>
+}
+
+function FilterableProductTable({products}){
   return (
     <div className = "container">
       <SearchBar />
-      <ProductTable />
+      <ProductTable products = {products} />
     </div>
   )
 }
@@ -22,10 +26,24 @@ function SearchBar(){
   )
 }
 
-function ProductTable(){
+function ProductTable({products}){
+  let rows = [];
+  let lastCategory = null
+
+  products.forEach((product) => {
+    if(product.category !== lastCategory){
+      rows.push(
+        <ProductCategoryRow key = {product.category} category = {product.category}  />
+      )
+    }
+    rows.push(
+      <ProductRow key = {product.name} name = {product.name} price = {product.price} />
+    )
+    lastCategory = product.category;
+  })
   return (
     <table>
-      <tbody>
+      <thead>
         <tr>
           <th>
             Name
@@ -34,41 +52,45 @@ function ProductTable(){
             Price
           </th>
         </tr>
-        <ProductCategoryRow />
-          <ProductRow />
-          <ProductRow />
-          <ProductRow />
-        <ProductCategoryRow />
-          <ProductRow />
-          <ProductRow />
-          <ProductRow />
+      </thead>
+      <tbody>
+        {rows}
       </tbody>
     </table>
     
   )
 }
 
-function ProductCategoryRow(){
+function ProductCategoryRow({category}){
   return (
     <tr>
       <td className = "categoryRow" colSpan = "2">
-          category
+          {category}
       </td>
     </tr>
   )
 }
 
-function ProductRow(){
+function ProductRow({name, price}){
   return (
     <tr>
       <td>
-        Item
+        {name}
       </td>
       <td>
-        Price
+        {price}
       </td>
     </tr>
   )
 }
 
-export default FilterableProductTable;
+const PRODUCTS = [
+  {category: "Fruits", price: "$1", stocked: true, name: "Apple"},
+  {category: "Fruits", price: "$1", stocked: true, name: "Dragonfruit"},
+  {category: "Fruits", price: "$2", stocked: false, name: "Passionfruit"},
+  {category: "Vegetables", price: "$2", stocked: true, name: "Spinach"},
+  {category: "Vegetables", price: "$4", stocked: false, name: "Pumpkin"},
+  {category: "Vegetables", price: "$1", stocked: true, name: "Peas"}
+];
+
+export default App;
