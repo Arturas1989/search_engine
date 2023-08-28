@@ -1,32 +1,54 @@
 
 import './App.css';
+import { useState } from 'react';
 
 function App(){
   return <FilterableProductTable products = {PRODUCTS}/>
 }
 
 function FilterableProductTable({products}){
+  const [filterText, setFilterText] = useState('test');
+  const [inStockOnly, setInStockOnly] = useState(false);
   return (
     <div className = "container">
-      <SearchBar />
-      <ProductTable products = {products} />
+      <SearchBar 
+        filterText = {filterText} 
+        inStockOnly = {inStockOnly} 
+        onFilterTextChange = {setFilterText}
+        onInStockOnlyChange = {setInStockOnly}
+      />
+      <ProductTable 
+        products = {products} 
+        filterText = {filterText} 
+        inStockOnly = {inStockOnly}
+      />
     </div>
   )
 }
 
-function SearchBar(){
+function SearchBar({filterText, inStockOnly, onFilterTextChange, onInStockOnlyChange}){
   return (
     <form>
-      <input type="text" id="search" name="search" placeholder="Search" /><br/>
+      <input 
+        type="text"
+        id="search" 
+        value = {filterText} 
+        placeholder="Search" 
+        onChange = {(e) => onFilterTextChange(e.target.value)}/>
+      <br/>
       <label>
-        <input type="checkbox" />
+        <input 
+          type="checkbox"
+          id="checkbox" 
+          checked = {inStockOnly} 
+          onChange = {(e) => onInStockOnlyChange(e.target.checked)}/>
         Only show products in stock
       </label>
     </form>
   )
 }
 
-function ProductTable({products}){
+function ProductTable({products, filterText, inStockOnly}){
   let rows = [];
   let lastCategory = null
 
