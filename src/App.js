@@ -1,13 +1,13 @@
 
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect} from 'react';
 
 function App(){
   return <FilterableProductTable products = {PRODUCTS}/>
 }
 
 function FilterableProductTable({products}){
-  const [filterText, setFilterText] = useState('test');
+  const [filterText, setFilterText] = useState('');
   const [inStockOnly, setInStockOnly] = useState(false);
   return (
     <div className = "container">
@@ -27,6 +27,7 @@ function FilterableProductTable({products}){
 }
 
 function SearchBar({filterText, inStockOnly, onFilterTextChange, onInStockOnlyChange}){
+
   return (
     <form>
       <input 
@@ -34,7 +35,7 @@ function SearchBar({filterText, inStockOnly, onFilterTextChange, onInStockOnlyCh
         id="search" 
         value = {filterText} 
         placeholder="Search" 
-        onChange = {(e) => onFilterTextChange(e.target.value)}/>
+        onChange= {(e) => onFilterTextChange(e.target.value)}/>
       <br/>
       <label>
         <input 
@@ -42,17 +43,48 @@ function SearchBar({filterText, inStockOnly, onFilterTextChange, onInStockOnlyCh
           id="checkbox" 
           checked = {inStockOnly} 
           onChange = {(e) => onInStockOnlyChange(e.target.checked)}/>
-        Only show products in stock
+          Only show products in stock
       </label>
     </form>
   )
+}
+
+function filterProducts(products, filterText, inStockOnly){
+  console.log(filterText)
+  if(!filterText) return products;
+  // console.log(products[0])
+  const filterTextLower = filterText.toLowerCase();
+  return products.filter(function(row){
+    if(row.stocked !== inStockOnly) return false;
+    // console.log(row)
+    for(const key in row){
+      if(typeof row[key] == 'string'){
+        // console.log(row[key], filterTextLower);
+        if(row[key].toLowerCase().indexOf(filterTextLower) !== -1) return true;
+      }
+      
+    }
+    return false;
+  });
 }
 
 function ProductTable({products, filterText, inStockOnly}){
   let rows = [];
   let lastCategory = null
 
-  products.forEach((product) => {
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  useEffect(() => {
+    const debounceFilter = setTimeout(function(){
+      const filtered = filterProducts(products, filterText, inStockOnly);
+      console.log(filtered)
+      setFilteredProducts(filtered);
+    },1000)
+    return () => clearTimeout(debounceFilter);
+  }, [filterText, inStockOnly, products])
+  
+  
+  
+  filteredProducts.forEach((product) => {
     if(product.category !== lastCategory){
       rows.push(
         <ProductCategoryRow key = {product.category} category = {product.category}  />
