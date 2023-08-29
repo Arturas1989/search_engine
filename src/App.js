@@ -71,11 +71,10 @@ function filterProducts(products, filterText, inStockOnly){
 function ProductTable({products, filterText, inStockOnly}){
 
   const [filteredProducts, setFilteredProducts] = useState([]);
-  
+
   useEffect(() => {
     const debounceFilter = setTimeout(function(){
       const filtered = filterProducts(products, filterText, inStockOnly);
-      console.log(filtered)
       setFilteredProducts(filtered);
     },1000)
     return () => clearTimeout(debounceFilter);
