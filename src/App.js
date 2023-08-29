@@ -69,10 +69,9 @@ function filterProducts(products, filterText, inStockOnly){
 }
 
 function ProductTable({products, filterText, inStockOnly}){
-  let rows = [];
-  let lastCategory = null
 
   const [filteredProducts, setFilteredProducts] = useState([]);
+  
   useEffect(() => {
     const debounceFilter = setTimeout(function(){
       const filtered = filterProducts(products, filterText, inStockOnly);
@@ -82,7 +81,8 @@ function ProductTable({products, filterText, inStockOnly}){
     return () => clearTimeout(debounceFilter);
   }, [filterText, inStockOnly, products])
   
-  
+  let rows = [];
+  let lastCategory = null
   
   filteredProducts.forEach((product) => {
     if(product.category !== lastCategory){
