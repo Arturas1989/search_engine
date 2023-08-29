@@ -55,7 +55,7 @@ function filterProducts(products, filterText, inStockOnly){
   // console.log(products[0])
   const filterTextLower = filterText.toLowerCase();
   return products.filter(function(row){
-    if(row.stocked !== inStockOnly) return false;
+    if(inStockOnly && !row.stocked) return false;
     // console.log(row)
     for(const key in row){
       if(typeof row[key] == 'string'){
