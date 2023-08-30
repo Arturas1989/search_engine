@@ -1,4 +1,11 @@
-# Getting Started with Create React App
+# Final version of project can be found at: [search_engine](https://arturas1989.github.io/search_engine/).
+
+project includes:
+
+- filtering any text value (case insensitive).
+- delaying filtering, letting user to finish typing.
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
