@@ -79,7 +79,7 @@ function ProductTable({products, filterText, inStockOnly}){
     const debounceFilter = setTimeout(function(){
       const filtered = filterProducts(products, filterText, inStockOnly);
       setFilteredProducts(filtered);
-    },300)
+    },500)
 
     // The arrow function ensures cleanup when the component unmounts
     // or when dependencies change, preventing multiple scheduled executions.
