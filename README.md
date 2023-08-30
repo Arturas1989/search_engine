@@ -1,6 +1,6 @@
-# Final version of project can be found at: [search_engine](https://arturas1989.github.io/search_engine/).
+# Final version of the project can be found at: [search_engine](https://arturas1989.github.io/search_engine/).
 
-project includes:
+The project includes:
 
 - filtering any text value (case insensitive).
 - delaying filtering, letting user to finish typing.
