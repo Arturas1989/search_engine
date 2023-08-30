@@ -6,6 +6,7 @@ function App(){
   return <FilterableProductTable products = {PRODUCTS}/>
 }
 
+
 function FilterableProductTable({products}){
   const [filterText, setFilterText] = useState('');
   const [inStockOnly, setInStockOnly] = useState(false);
@@ -27,7 +28,8 @@ function FilterableProductTable({products}){
 }
 
 function SearchBar({filterText, inStockOnly, onFilterTextChange, onInStockOnlyChange}){
-
+  // The SearchBar component updates filterText and inStockOnly states
+  // based on user input and checkbox interaction.
   return (
     <form>
       <input 
@@ -49,17 +51,16 @@ function SearchBar({filterText, inStockOnly, onFilterTextChange, onInStockOnlyCh
   )
 }
 
+// The filterProducts function filters products based on the user's criteria.
+// It filters by name and stock availability.
 function filterProducts(products, filterText, inStockOnly){
   console.log(filterText)
   if(!filterText) return products;
-  // console.log(products[0])
   const filterTextLower = filterText.toLowerCase();
   return products.filter(function(row){
     if(inStockOnly && !row.stocked) return false;
-    // console.log(row)
     for(const key in row){
       if(typeof row[key] == 'string'){
-        // console.log(row[key], filterTextLower);
         if(row[key].toLowerCase().indexOf(filterTextLower) !== -1) return true;
       }
       
@@ -72,17 +73,24 @@ function ProductTable({products, filterText, inStockOnly}){
 
   const [filteredProducts, setFilteredProducts] = useState([]);
 
+  // The debounce technique delays the execution of filterProducts function
+  // until the user has finished typing.
   useEffect(() => {
     const debounceFilter = setTimeout(function(){
       const filtered = filterProducts(products, filterText, inStockOnly);
       setFilteredProducts(filtered);
     },1000)
+
+    // The arrow function ensures cleanup when the component unmounts
+    // or when dependencies change, preventing multiple scheduled executions.
     return () => clearTimeout(debounceFilter);
-  }, [filterText, inStockOnly, products])
+  }, [filterText, inStockOnly, products]) // dependency array, which specifies values the effect depends on.
+  //when any of the values listed in dependency array change, the effect will re-run.
   
   let rows = [];
   let lastCategory = null
   
+  // Constructing components to display filteredProducts.
   filteredProducts.forEach((product) => {
     if(product.category !== lastCategory){
       rows.push(
